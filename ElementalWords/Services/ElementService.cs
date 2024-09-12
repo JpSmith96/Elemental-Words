@@ -19,7 +19,9 @@ namespace ElementalWords.Services
         {
             try
             {
-                var jsonString = File.ReadAllText(@"../../../Data/elements.json");
+                var filePath = Path.Combine(Environment.CurrentDirectory, @"Data\", "elements.json");
+
+                var jsonString = File.ReadAllText(filePath);
 
                 var elements = JsonSerializer.Deserialize<Element[]>(jsonString, jsonOptions);
 
@@ -37,29 +39,39 @@ namespace ElementalWords.Services
         }
 
         /// <summary>
-        /// Gets all possible combinations of elements that make up the word.
+        /// Public exposed method for finding combinations of words
         /// </summary>
         /// <param name="word"></param>
         /// <returns></returns>
         public ICollection<ElementResponse> ElementalForms(string word)
         {
-            return FindCombinations(word.ToLower());
+            try
+            {
+                return FindCombinations(word.ToLower());
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error processing combinations of elements for word {word}", ex);
+            }
         }
 
+
+        /// <summary>
+        /// Recursive function designed to find all possible combinations of elements to build the argument word
+        /// </summary>
+        /// <param name="remainingWord"></param>
+        /// <returns></returns>
         private List<ElementResponse> FindCombinations(string remainingWord)
         {
             var combinations = new List<ElementResponse>();
-
 
             foreach (var element in elements)
             {
                 //iterate through element and check if the remainder of the word starts with the element symbol
                 if (remainingWord.StartsWith(element.Symbol, StringComparison.CurrentCultureIgnoreCase))
                 {
-
                     //create a new substring of the remaining word that excludes the element symbol we just found
                     var newRemainingWord = remainingWord[element.Symbol.Length..];
-
 
                     //if we've reached the end of the word, add the element to the combinations list
                     if (string.IsNullOrWhiteSpace(newRemainingWord))
@@ -93,8 +105,5 @@ namespace ElementalWords.Services
 
             return combinations;
         }
-
-
-
     }
 }

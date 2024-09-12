@@ -13,7 +13,6 @@ if (elementService == null)
     return;
 }
 
-
 Console.WriteLine("Loading elements...");
 
 var elementsLoaded = elementService.InitializeElements();
@@ -35,9 +34,9 @@ while (true)
     Console.WriteLine("Please enter a word:");
     word = Console.ReadLine();
 
-    if (string.IsNullOrWhiteSpace(word) || word.Any(char.IsDigit))
+    if (string.IsNullOrWhiteSpace(word) || !word.All(char.IsAsciiLetter) || word.Contains(' '))
     {
-        Console.WriteLine("Please enter a valid word consiting only of letters:");
+        Console.WriteLine("Please enter ONE valid word consiting ONLY of letters.");
         continue;
     }
 
