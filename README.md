@@ -42,6 +42,7 @@ A breakdown of how the `FindCombinations` method is:
 ## Notes
 - `IElementService` is injected using a singleton as the object will be the same for all requests in this small program
 - The list of elements are loaded once when the application starts for efficiency.
+- It seems like there's multiple periodic tables based on where you are in the world, so feel free to swap out the `Elements.Json` file for your own, as long as the file you provide has "symbol" and "name" fields, regardless of other fields present
 
 ## What I would change
 Below is a list of things I would have done different or changed given a larger timeframe:
